@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>pgn to move</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Syeda_Reeha_Quasar </a></h1>
+                <nav><ul>
+                    <li><a href="/category/about_me.html">about_me</a></li>
+                    <li><a href="/category/abstract.html">abstract</a></li>
+                    <li><a href="/category/article.html">Article</a></li>
+                    <li><a href="/category/contact.html">Contact</a></li>
+                    <li class="active"><a href="/category/python.html">Python</a></li>
+                    <li><a href="/category/where_i_went_wrong.html">Where_I_Went_Wrong</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/pgn-to-move.html" rel="bookmark"
+           title="Permalink to pgn to move">pgn to move</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-05-12T21:00:00+05:30">
+                Published: Tue 12 May 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/reeha.html">Reeha</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+
+</footer><!-- /.post-info -->      <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">game_file</span> <span class="o">=</span> <span class="s2">&quot;[Event </span><span class="se">\&quot;</span><span class="s2">Lloyds Bank op</span><span class="se">\&quot;</span><span class="s2">] [Site </span><span class="se">\&quot;</span><span class="s2">London</span><span class="se">\&quot;</span><span class="s2">] [Date </span><span class="se">\&quot;</span><span class="s2">1984.??.??</span><span class="se">\&quot;</span><span class="s2">] [Round </span><span class="se">\&quot;</span><span class="s2">1</span><span class="se">\&quot;</span><span class="s2">] [White </span><span class="se">\&quot;</span><span class="s2">Adams, Michael</span><span class="se">\&quot;</span><span class="s2">] [Black </span><span class="se">\&quot;</span><span class="s2">Sedgwick, David</span><span class="se">\&quot;</span><span class="s2">] [Result </span><span class="se">\&quot;</span><span class="s2">1-0</span><span class="se">\&quot;</span><span class="s2">] [WhiteElo </span><span class="se">\&quot;\&quot;</span><span class="s2">] [BlackElo </span><span class="se">\&quot;\&quot;</span><span class="s2">] [ECO </span><span class="se">\&quot;</span><span class="s2">C05</span><span class="se">\&quot;</span><span class="s2">] 1.e4 e6 2.d4 d5 3.Nd2 Nf6 4.e5 Nfd7 5.f4 c5 6.c3 Nc6 7.Ndf3 cxd4 8.cxd4 f6 9.Bd3 Bb4+ 10.Bd2 Qb6 11.Ne2 fxe5 12.fxe5 O-O 13.a3 Be7 14.Qc2 Rxf3 15.gxf3 Nxd4 16.Nxd4 Qxd4 17.O-O-O Nxe5 18.Bxh7+ Kh8 19.Kb1 Qh4 20.Bc3 Bf6 21.f4 Nc4 22.Bxf6 Qxf6 23.Bd3 b5 24.Qe2 Bd7 25.Rhg1 Be8 26.Rde1 Bf7 27.Rg3 Rc8 28.Reg1 Nd6 29.Rxg7 Nf5 30.R7g5 Rc7 31.Bxf5 exf5 32.Rh5+  1-0&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
+    <span class="n">squares</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="s2">&quot;12345678&quot;</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="s2">&quot;abcdefgh&quot;</span><span class="p">]</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;RNBQKBNR&quot;</span> <span class="o">+</span> <span class="s2">&quot;P&quot;</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="s2">&quot;p&quot;</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">+</span> <span class="s2">&quot;rnbqkbnr&quot;</span>
+    <span class="n">board_view</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">squares</span><span class="p">,</span> <span class="n">start</span><span class="p">))</span>
+
+    <span class="n">piece_view</span> <span class="o">=</span> <span class="p">{</span><span class="n">_</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="s2">&quot;RBKQNPrbkqnp&quot;</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">sq</span> <span class="ow">in</span> <span class="n">board_view</span><span class="p">:</span>
+        <span class="n">piece</span> <span class="o">=</span> <span class="n">board_view</span><span class="p">[</span><span class="n">sq</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">piece</span> <span class="o">!=</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+            <span class="n">piece_view</span><span class="p">[</span><span class="n">piece</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sq</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">board_view</span><span class="p">,</span> <span class="n">piece_view</span>
+
+
+<span class="k">def</span> <span class="nf">pgn_to_move</span><span class="p">(</span><span class="n">game_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># raw_pgn = &quot; &quot;.join([line.strip() for line in game_file])</span>
+    <span class="n">raw_pgn</span> <span class="o">=</span> <span class="n">game_file</span>
+
+    <span class="n">comments_marked</span> <span class="o">=</span> <span class="n">raw_pgn</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">)</span>
+    <span class="n">STRC</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;&lt;[^&gt;]*&gt;&quot;</span><span class="p">)</span>
+    <span class="n">comments_removed</span> <span class="o">=</span> <span class="n">STRC</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">comments_marked</span><span class="p">)</span>
+    <span class="c1"># comments_removed = re.sub(&quot;&lt;[^&gt;]*&gt;&quot;, &quot; &quot;, comments_marked)</span>
+
+    <span class="n">STR_marked</span> <span class="o">=</span> <span class="n">comments_removed</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">)</span>
+    <span class="n">str_removed</span> <span class="o">=</span> <span class="n">STRC</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">STR_marked</span><span class="p">)</span>
+
+    <span class="n">MOVE_NUM</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;[1-9][0-9]* *</span><span class="se">\\</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">just_moves</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">MOVE_NUM</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">str_removed</span><span class="p">)]</span>
+    <span class="c1"># just_moves = [_.strip() for _ in re.split(&quot;[1-9][0-9]* *\.&quot;,str_removed)]</span>
+
+    <span class="n">last_move</span> <span class="o">=</span> <span class="n">just_moves</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;( *1 *- *0 *| *0 *- *1 *| *1/2 *= *1/2 *)&quot;</span><span class="p">)</span>
+    <span class="n">last_move</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">last_move</span><span class="p">)</span>
+    <span class="n">moves</span> <span class="o">=</span> <span class="n">just_moves</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">last_move</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">moves</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

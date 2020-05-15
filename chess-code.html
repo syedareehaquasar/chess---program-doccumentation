@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Chess code</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Syeda_Reeha_Quasar </a></h1>
+                <nav><ul>
+                    <li><a href="/category/about_me.html">about_me</a></li>
+                    <li><a href="/category/abstract.html">abstract</a></li>
+                    <li><a href="/category/article.html">Article</a></li>
+                    <li><a href="/category/contact.html">Contact</a></li>
+                    <li class="active"><a href="/category/python.html">Python</a></li>
+                    <li><a href="/category/where_i_went_wrong.html">Where_I_Went_Wrong</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/chess-code.html" rel="bookmark"
+           title="Permalink to Chess code">Chess code</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-05-12T21:00:00+05:30">
+                Published: Tue 12 May 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/reeha.html">Reeha</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+
+</footer><!-- /.post-info -->      <h1>Can move</h1>
+<div class="highlight"><pre><span></span><span class="n">BOARD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">x + y for x in &quot;ABCDEFGH&quot; for y in &quot;12345678&quot;</span><span class="o">]</span><span class="w"></span>
+
+
+<span class="n">def</span><span class="w"> </span><span class="n">file_diff</span><span class="p">(</span><span class="nl">from_pos</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">,</span><span class="w"> </span><span class="nl">to_pos</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">int</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="n">ord</span><span class="p">(</span><span class="n">from_pos</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ord</span><span class="p">(</span><span class="n">to_pos</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="p">))</span><span class="w"></span>
+
+
+<span class="n">def</span><span class="w"> </span><span class="n">rank_diff</span><span class="p">(</span><span class="nl">from_pos</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">,</span><span class="w"> </span><span class="nl">to_pos</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">int</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="n">ord</span><span class="p">(</span><span class="n">from_pos</span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ord</span><span class="p">(</span><span class="n">to_pos</span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="p">))</span><span class="w"></span>
+
+
+<span class="n">def</span><span class="w"> </span><span class="n">move_sep</span><span class="p">(</span><span class="nl">from_pos</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">,</span><span class="w"> </span><span class="nl">to_pos</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nc">int</span><span class="p">,</span><span class="w"> </span><span class="nc">int</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">file_diff</span><span class="p">(</span><span class="n">from_pos</span><span class="p">,</span><span class="w"> </span><span class="n">to_pos</span><span class="p">),</span><span class="w"> </span><span class="n">rank_diff</span><span class="p">(</span><span class="n">from_pos</span><span class="p">,</span><span class="w"> </span><span class="n">to_pos</span><span class="p">)</span><span class="w"></span>
+
+
+<span class="n">def</span><span class="w"> </span><span class="n">check_move</span><span class="p">(</span><span class="nl">piece</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">,</span><span class="w"> </span><span class="nl">from_pos</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">,</span><span class="w"> </span><span class="nl">to_pos</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nl">bool</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_pos</span><span class="p">.</span><span class="n">strip</span><span class="p">().</span><span class="nf">upper</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">tp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_pos</span><span class="p">.</span><span class="n">strip</span><span class="p">().</span><span class="nf">upper</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">fp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">tp</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">from_pos</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">BOARD</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">to_pos</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">BOARD</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">False</span><span class="w"></span>
+<span class="w">    </span><span class="n">moved_by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">move_sep</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="n">tp</span><span class="p">)</span><span class="w"></span>
+
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">can_rook_move</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">moved_by</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">moved_by</span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">can_knight_move</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">moved_by</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="o">[</span><span class="n">(1, 2), (2, 1)</span><span class="o">]</span><span class="w"></span>
+
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">can_bishop_move</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">moved_by</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">moved_by</span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="w"></span>
+
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">can_queen_move</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">can_rook_move</span><span class="p">()</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">can_bishop_move</span><span class="p">()</span><span class="w"></span>
+
+
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">can_king_move</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">moved_by</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="o">[</span><span class="n">(0, 1), (1, 0), (1, 1)</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;R&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">can_rook_move</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;N&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">can_knight_move</span><span class="p">,</span><span class="w">  </span><span class="ss">&quot;B&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">can_bishop_move</span><span class="p">,</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;Q&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">can_queen_move</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;K&quot;</span><span class="err">:</span><span class="w"> </span><span class="n">can_king_move</span><span class="err">}</span><span class="o">[</span><span class="n">piece</span><span class="o">]</span><span class="p">()</span><span class="w"></span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">check_move</span><span class="p">(</span><span class="ss">&quot;Q&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;D2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;E4&quot;</span><span class="p">))</span><span class="w"></span>
+<span class="k">print</span><span class="p">(</span><span class="n">check_move</span><span class="p">(</span><span class="ss">&quot;K&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;E2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;E3&quot;</span><span class="p">))</span><span class="w"></span>
+<span class="k">print</span><span class="p">(</span><span class="n">check_move</span><span class="p">(</span><span class="ss">&quot;N&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;D2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;E4&quot;</span><span class="p">))</span><span class="w"></span>
+<span class="k">print</span><span class="p">(</span><span class="n">check_move</span><span class="p">(</span><span class="ss">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;D2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;E4&quot;</span><span class="p">))</span><span class="w"></span>
+<span class="k">print</span><span class="p">(</span><span class="n">check_move</span><span class="p">(</span><span class="ss">&quot;R&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;D2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;E4&quot;</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
